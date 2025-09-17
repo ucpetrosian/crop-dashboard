@@ -12,12 +12,14 @@ import json
 
 
 """TREX DF CREATION"""
+## Set user on your system. Should be only variable in paths between computers.
+user = "cpetrosi"
 
-path = 'C:/Users/cpetrosi/Box/TREX/MISCELLANEOUS/Datalogger_Report_Files'
+path = f'C:/Users/{user}/Box/TREX/MISCELLANEOUS/Datalogger_Report_Files'
 sites = ['OLA', 'WWF', 'VAC', 'SLC', 'FLT', 'WES']
 
 #range df is a csv containing the min and max values for each parameter in the csiformat files
-rangepath = "C:/Users/cpetrosi/Box/TREX/MISCELLANEOUS/Datalogger_Report_Files/suplementary/all_dl_ranges.csv"
+rangepath = f"C:/Users/{user}/Box/TREX/MISCELLANEOUS/Datalogger_Report_Files/suplementary/all_dl_ranges.csv"
 rangedf = pd.read_csv(rangepath, header=[0],sep=',',na_values="NAN",engine='python')
 
 rangedf.at[0, 'e_probe'] = -2
@@ -68,7 +70,7 @@ last_month = date.today() - timedelta(days=30)
 last_month = np.datetime64(last_month)
 trex_all = trex_all[trex_all["TIMESTAMP"] > last_month]
 
-trex_all.to_csv("C:/Users/cpetrosi/Documents/GitHub/crop-dashboard/sample-data/trex_data.csv")
+trex_all.to_csv(f"C:/Users/{user}/Documents/GitHub/crop-dashboard/sample-data/trex_data.csv")
 
 
 
@@ -77,10 +79,10 @@ test_calls = ['e_probe', 'e_sat_probe', 'H2O_probe', 'RH_3_1_1', 'T_DP_3_1_1', '
 """OLIVE DF CREATION"""
 
 
-path = 'C:/Users/cpetrosi/Box/TREX/MISCELLANEOUS/Datalogger_Report_Files'
+path = f'C:/Users/{user}/Box/TREX/MISCELLANEOUS/Datalogger_Report_Files'
 sites = ['BLS_001', 'BLS_002', 'ORO_022', 'ORO_043', 'COR_CS3', 'ART_011', 'BRO_001']
 
-rangepath = "C:/Users/cpetrosi/Box/TREX/MISCELLANEOUS/Datalogger_Report_Files/suplementary/all_dl_ranges.csv"
+rangepath = f"C:/Users/{user}/Box/TREX/MISCELLANEOUS/Datalogger_Report_Files/suplementary/all_dl_ranges.csv"
 rangedf = pd.read_csv(rangepath, header=[0],sep=',',na_values="NAN",engine='python')
 
 
@@ -122,10 +124,10 @@ last_month = date.today() - timedelta(days=30)
 last_month = np.datetime64(last_month)
 
 matt_all = matt_all[matt_all["TIMESTAMP"] > last_month]
-matt_all.to_csv("C:/Users/cpetrosi/Documents/Github/crop-dashboard/sample-data/matt_data.csv")
+matt_all.to_csv(f"C:/Users/{user}/Documents/Github/crop-dashboard/sample-data/matt_data.csv")
 
 """LYNN ADDITION"""
-path = 'C:/Users/cpetrosi/Box/Gallo Downloads'
+path = f'C:/Users/{user}/Box/Gallo Downloads'
 for fname in fnmatch.filter(os.listdir(path),'*CSIFormat*'):
   appended_data = []
   df = pd.read_csv(path+'/'+fname, header=[0],skiprows=[0,2,3],sep=',',na_values="NAN",engine='python')
@@ -154,16 +156,17 @@ last_month = np.datetime64(last_month)
 
 lynn_all = lynn_all[lynn_all["TIMESTAMP"] > last_month]
 
-lynn_all.to_csv("C:/Users/cpetrosi/Documents/Github/crop-dashboard/sample-data/lynn_data.csv")
+lynn_all.to_csv(f"C:/Users/{user}/Documents/Github/crop-dashboard/sample-data/lynn_data.csv")
 
+## All code below is used to send data to PythonAnywhere, optional for local use.
 
-with open("C:/Users/cpetrosi/Documents/GitHub/crop-dashboard/hidden_file.json", 'r') as file:
+with open(f"C:/Users/{user}/Documents/GitHub/crop-dashboard/hidden_file.json", 'r') as file:
    user_info = json.load(file)
 
 username = user_info["username"]
-token = user_info["token"]  # found in your PythonAnywhere account
+token = user_info["token"]  
 
-file_path = "C:/Users/cpetrosi/Documents/GitHub/crop-dashboard/sample-data/trex_data.csv"
+file_path = f"C:/Users/{user}/Documents/GitHub/crop-dashboard/sample-data/trex_data.csv"
 upload_path = "/home/audreypet/crop-dashboard/sample-data/trex_data.csv"
 
 with open(file_path, 'rb') as f:
@@ -174,7 +177,7 @@ with open(file_path, 'rb') as f:
     )
 
 
-file_path = "C:/Users/cpetrosi/Documents/Github/crop-dashboard/sample-data/matt_data.csv"
+file_path = f"C:/Users/{user}/Documents/Github/crop-dashboard/sample-data/matt_data.csv"
 upload_path = "/home/audreypet/crop-dashboard/sample-data/matt_data.csv"
 
 with open(file_path, 'rb') as f:
@@ -184,7 +187,7 @@ with open(file_path, 'rb') as f:
         files={'content': f}
     )
 
-file_path = "C:/Users/cpetrosi/Documents/Github/crop-dashboard/sample-data/lynn_data.csv"
+file_path = f"C:/Users/{user}/Documents/Github/crop-dashboard/sample-data/lynn_data.csv"
 upload_path = "/home/audreypet/crop-dashboard/sample-data/lynn_data.csv"
 
 with open(file_path, 'rb') as f:
